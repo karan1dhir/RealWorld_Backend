@@ -17,6 +17,9 @@ module.exports = {
             type: DT.STRING(50),
             allowNull: true,
             unique: true
+        },
+        token: {
+            type : DT.STRING(50),
         }
     }
 };
