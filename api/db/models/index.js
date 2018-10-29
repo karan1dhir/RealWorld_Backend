@@ -14,6 +14,11 @@ const db = new Sequelize({
 
 const User = db.define('user', user)
 const Article = db.define('article',article)
+
+Article.belongsTo(User)
+User.hasMany(Article)
+
+
 User.prototype.generateJwtToken = function(){
     return jwt.sign({
         id:this.id,

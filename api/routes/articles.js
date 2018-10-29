@@ -2,7 +2,7 @@ const {
     Router
 } = require('express')
 const {
-    Article
+    Article,User
 } = require('../db/models/index.js')
 
 const route = Router()
@@ -31,6 +31,27 @@ route.post('/',(req,res)=>{
 
 route.get('/',async(req,res)=>{
 
+    let whereClause = []
+    for(let key of Object.keys(req.query)){
+        switch(key){
+         case 'tag':console.log('tag')
+         break;
+         case 'author':console.log('author')
+         if(req.query.author){
+            console.log('author='+req.query.author);
+            const user = await User.findOne({
+                where:{username:req.query.author}
+            }).then((user)=>{
+                 if(user){
+                     whereClause.push({userId:user.id})
+                 }
+            })           
+         } 
+          break;
+          
+          
+        }
+    }
     const articles = await Article.findAll()   
     res.status(200).json(articles)
 
