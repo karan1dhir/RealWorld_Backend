@@ -10,7 +10,8 @@ app.use(express.urlencoded({
 }))
 app.use('/api', require('./api/index.js'))
 
-db.sync()
+
+db.sync({force:true})
     .then(() => {
         console.log('Database Synced')
         app.listen(2399, () => {

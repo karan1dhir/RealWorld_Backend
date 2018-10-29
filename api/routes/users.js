@@ -7,21 +7,18 @@ const {
 
 const route = Router()
 
-route.post('/', async (req, res) => {
+route.post('/',(req, res) => {
     console.log(User)
-    const newUser = await User.create({
+    const newUser = User.create({
         username: req.body.username,
         email: req.body.email,
         password: req.body.password
 
     }).then(()=>{
       console.log("user has been successfully created")
-      const jwtToken = newUser.generateJwtToken()
-      newUser.token = jwtToken
       res.status(201).json({
         message: 'User added',
-        id: newUser.id,
-        token:newUser.token
+        id: newUser.id
     }) 
    }).catch(()=>{
        console.log("error")
@@ -32,7 +29,23 @@ route.post('/', async (req, res) => {
 })
 
 route.post('/login',async(req,res) =>{
-   
+   if(req.body.email){
+       const user = await User.findOne({
+           where : {email: req.body.email}
+       })
+       const jwtToken = user.generateJwtToken()
+       user.token = jwtToken
+       if(!user){
+            res.status(400).json({
+               message:"username not found"
+           }) 
+       }
+       console.log(user.email)
+       res.status(201).json({
+           message: 'User found',
+           User:user
+       })
+   }
 })
 
 module.exports = route
