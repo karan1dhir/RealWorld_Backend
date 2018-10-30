@@ -21,7 +21,6 @@ route.post('/', async (req, res) => {
                 token: jwtToken.split(' ')[1]
             }
         })
-
         const newArticle = await Article.create({
             title: req.body.title,
             description: req.body.description,
@@ -29,11 +28,12 @@ route.post('/', async (req, res) => {
             userId: user.id
         })
         console.log(newArticle)
-        // newArticle.slug = newArticle.generateSlug()
-        res.status(201).json({
-            message: 'article added',
-            id: newArticle.id
-
+        newArticle.slug = newArticle.generateSlug(newArticle.title)
+        newArticle.save().then(() => {
+            res.status(201).json({
+                message: 'article added',
+                id: newArticle.id
+            })
         })
     }
 })

@@ -27,8 +27,11 @@ route.get('/', async (req, res) => {
                     User: user
                 })
             }).catch(console.error)
-        // console.log(user)
     }
 })
+
+
+
+
 
 module.exports = route
