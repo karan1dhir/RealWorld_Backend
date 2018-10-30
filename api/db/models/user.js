@@ -19,7 +19,7 @@ module.exports = {
             unique: true
         },
         token: {
-            type : DT.STRING(50),
+            type: DT.STRING(500)
         }
     }
 };
