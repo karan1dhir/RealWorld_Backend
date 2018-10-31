@@ -14,9 +14,6 @@ module.exports = {
         },
         body: {
             type: DT.STRING(50)
-        },
-        author: {
-            type: JSON
         }
     }
 };

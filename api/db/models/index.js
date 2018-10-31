@@ -26,10 +26,46 @@ User.prototype.generateJwtToken = function () {
         username: this.username,
     }, 'karan')
 }
+
+
+
 Article.prototype.generateSlug = function (title) {
     let titleslug = slug(title) + "-" + (Math.random() * Math.pow(36, 6) | 0).toString(36)
     return titleslug
 }
+Article.prototype.toSendJSON = function () {
+    return {
+        article: {
+            slug: this.slug,
+            title: this.title,
+            description: this.description,
+            body: this.body,
+            createdAt: this.createdAt,
+            updatedAt: this.updatedAt,
+            author: {
+                username: this.user.username,
+                bio: this.user.bio,
+                image: this.user.image
+            }
+        }
+    }
+}
+Article.prototype.toSendJSONArray = function () {
+    return {
+        slug: this.slug,
+        title: this.title,
+        description: this.description,
+        body: this.body,
+        createdAt: this.createdAt,
+        updatedAt: this.updatedAt,
+        author: {
+            username: this.user.username,
+            bio: this.user.bio,
+            image: this.user.image
+        }
+    }
+}
+
 
 module.exports = {
     db,

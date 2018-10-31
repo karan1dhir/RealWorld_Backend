@@ -41,8 +41,7 @@ route.post('/login', async (req, res) => {
             user.token = jwtToken
             user.save().then(() => {
                 res.status(201).json({
-                    message: 'User found',
-                    User: user
+                    user: user
                 })
             })
         })
