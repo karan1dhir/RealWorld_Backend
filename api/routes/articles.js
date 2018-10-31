@@ -29,10 +29,11 @@ route.post('/', async (req, res) => {
         })
         console.log(newArticle)
         newArticle.slug = newArticle.generateSlug(newArticle.title)
+        newArticle.author = user
         newArticle.save().then(() => {
             res.status(201).json({
                 message: 'article added',
-                id: newArticle.id
+                article: newArticle
             })
         })
     }

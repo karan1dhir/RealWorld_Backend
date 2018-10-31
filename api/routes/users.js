@@ -20,7 +20,7 @@ route.post('/', async (req, res) => {
     res.status(201).json({
         message: 'User added',
         id: newUser.id,
-        User: user
+
     })
 })
 

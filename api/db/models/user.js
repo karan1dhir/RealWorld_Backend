@@ -18,6 +18,14 @@ module.exports = {
             allowNull: true,
             unique: true
         },
+        bio: {
+            type: DT.STRING(50),
+            defaultValue: ' '
+        },
+        image: {
+            type: DT.STRING(50),
+            defaultValue: ' '
+        },
         token: {
             type: DT.STRING(500)
         }
