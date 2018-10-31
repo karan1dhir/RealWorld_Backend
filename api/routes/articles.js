@@ -118,7 +118,7 @@ route.put('/:slug', auth.required, async (req, res) => {
         }).then((findArticle) => {
 
             if (!findArticle) {
-                res.status(204).json({
+                res.status(401).json({
                     message: 'Article not found'
                 })
             }
@@ -142,17 +142,34 @@ route.put('/:slug', auth.required, async (req, res) => {
     })
 
 })
-route.delete('/slug', auth.required, async (req, res) => {
+route.delete('/:slug', auth.required, async (req, res) => {
 
-    User.findById(req.payload.id).then(() => {
+    User.findById(req.payload.id).then((user) => {
 
+        if (!user) {
+            return res.status(401).json({
+                message: 'user donot exist'
+            })
+        }
+        const findArticle = Article.findOne({
+            where: {
+                slug: req.params.slug
+            }
+        }).then((findArticle) => {
+
+            if (!findArticle) {
+                res.status(401).json({
+                    message: 'Article not found'
+                })
+            }
+            if (findArticle.userId === user.id) {
+                findArticle.destroy()
+            }
+            res.status(200).json({
+                message: 'Article Deleted Successfully !'
+            })
+        })
     })
-
-
-
 })
-
-
-
 
 module.exports = route
