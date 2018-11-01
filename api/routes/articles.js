@@ -173,18 +173,4 @@ route.delete('/:slug', auth.required, async (req, res) => {
         })
     })
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 module.exports = route

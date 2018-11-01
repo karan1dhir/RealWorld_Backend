@@ -73,6 +73,7 @@ route.get('/', auth.optional, async (req, res) => {
 })
 route.delete('/:id', auth.required, async (req, res) => {
 
+
     const findArticle = await Article.findOne({
         where: {
             slug: req.baseUrl.split('/')[3]
