@@ -74,7 +74,20 @@ Article.prototype.toSendJSONArray = function () {
         }
     }
 }
+Comment.prototype.toSendJSONArray = function () {
 
+    return {
+        id: this.comment,
+        createdAt: this.createdAt,
+        updatedAt: this.updatedAt,
+        body: this.body,
+        author: {
+            username: this.user.username,
+            bio: this.user.bio,
+            image: this.user.image,
+        }
+    }
+}
 
 module.exports = {
     db,
