@@ -11,6 +11,8 @@ const {
 const auth = require('./auth')
 const route = Router()
 
+route.use('/:slug/comments', require('./comments'))
+
 route.post('/', async (req, res) => {
 
     if (req.get('Authorization')) {
@@ -21,6 +23,7 @@ route.post('/', async (req, res) => {
                 token: jwtToken.split(' ')[1]
             }
         })
+        console.log(user)
         const newArticle = await Article.create({
             title: req.body.title,
             description: req.body.description,
@@ -29,7 +32,6 @@ route.post('/', async (req, res) => {
         })
         console.log(newArticle)
         newArticle.slug = newArticle.generateSlug(newArticle.title)
-        newArticle.author = user
         newArticle.save().then(() => {
             res.status(201).json({
 
@@ -104,7 +106,6 @@ route.get('/', async (req, res) => {
             articlesCount: allArticles.length
         })
     })
-
 })
 
 route.put('/:slug', auth.required, async (req, res) => {
@@ -171,5 +172,18 @@ route.delete('/:slug', auth.required, async (req, res) => {
         })
     })
 })
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 module.exports = route
