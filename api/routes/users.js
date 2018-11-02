@@ -4,7 +4,6 @@ const {
 const {
     User
 } = require('../db/models/index.js')
-const cyrpto = require('cyrpto')
 
 const route = Router()
 

@@ -3,7 +3,8 @@ const {
 } = require('express')
 const {
     Article,
-    User
+    User,
+    Tag
 } = require('../db/models/index.js')
 const {
     Op
@@ -24,18 +25,30 @@ route.post('/', async (req, res) => {
                 token: jwtToken.split(' ')[1]
             }
         })
-        console.log(user)
-        const newArticle = await Article.create({
-            title: req.body.title,
-            description: req.body.description,
-            body: req.body.body,
-            userId: user.id
-        })
-        console.log(newArticle)
-        newArticle.slug = newArticle.generateSlug(newArticle.title)
-        newArticle.save().then(() => {
-            res.status(201).json({
+        const newArticle = new Article()
+        newArticle.title = req.body.article.title;
+        newArticle.description = req.body.article.description;
+        newArticle.body = req.body.article.body
+        newArticle.userId = user.id
 
+        const tagList = req.body.article.tagList
+
+        let tagArray = []
+        for (tag in tagList) {
+            await Tag.findOrCreate({
+                where: {
+                    name: tagList[tag]
+                }
+            }).spread((tagFoundOrCreated, created) => {
+                tagArray.push(tagFoundOrCreated)
+
+            })
+        }
+
+        newArticle.slug = newArticle.generateSlug(newArticle.title)
+        newArticle.save().then((newArticle) => {
+            newArticle.setTags(tagArray)
+            res.status(201).json({
                 article: newArticle
             })
         })
@@ -97,16 +110,30 @@ route.get('/', async (req, res) => {
         },
         limit: limit,
         offset: offset
-    }).then((articles) => {
-        allArticles = []
-        articles.forEach(article => {
-            allArticles.push(article.toSendJSONArray())
-        });
-        res.status(200).json({
-            articles: allArticles,
-            articlesCount: allArticles.length
-        })
     })
+    const abc = async function () {
+        let newArticles = []
+
+        const def = async function () {
+            for (let article of articles) {
+                const articleTags = await article.getTags({
+                    attributes: ['name']
+                })
+
+                let tagList = []
+                for (tag of articleTags) {
+                    tagList.push(tag.name)
+                }
+                newArticles.push(article.toSendJSONArray(tagList))
+            }
+        }
+        await def();
+        res.status(200).json({
+            articles: newArticles,
+            articlesCount: newArticles.length
+        })
+    }
+    await abc();
 })
 
 route.put('/:slug', auth.required, async (req, res) => {
