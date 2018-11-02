@@ -19,12 +19,14 @@ route.get('/:username', auth.optional, async (req, res) => {
                     message: 'user not found'
                 })
             }
-            res.send(200).json({
+            res.status(200).json({
                 User: user
             })
         })
     } else {
-        res.status()
+        res.status(401).json({
+            message: 'Unauthorized User'
+        })
     }
 })
 module.exports = route
