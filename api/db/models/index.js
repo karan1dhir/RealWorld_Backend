@@ -98,6 +98,9 @@ Comment.prototype.toSendJSONArray = function () {
         }
     }
 }
+Tag.prototype.toSendJSONArray = function () {
+    return this.name
+}
 
 module.exports = {
     db,

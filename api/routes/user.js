@@ -43,20 +43,29 @@ route.put('/', async (req, res) => {
                     message: "username not found"
                 })
             }
-            console.log(user)
-            if (typeof req.body.username !== undefined) {
-                user.username = req.body.username;
+            if (req.body.user.username && typeof req.body.user.username !== undefined ) {
+                user.username = req.body.user.username;
             }
-            if (typeof req.body.email !== undefined) {
-                user.email = req.body.email
+            if (req.body.user.email && typeof req.body.user.email !== undefined) {
+                user.email = req.body.user.email
             }
-            if (typeof req.body.password !== undefined) {
-                user.password = req.body.password
+            if (req.body.user.password && typeof req.body.user.password !== undefined) {
+                user.password = req.body.user.password
+            }
+            if (req.body.user.bio && typeof req.body.user.bio !== undefined) {
+                user.bio = req.body.user.bio
+            }
+            if (req.body.user.image && typeof req.body.user.image !== undefined) {
+                user.image = req.body.user.image
             }
             user.save()
             res.status(200).json({
                 message: "user successfull updated",
                 User: user
+            })
+        }).catch((error)=>{
+            res.status(400).json({
+                message:"user is not updated"
             })
         })
     }

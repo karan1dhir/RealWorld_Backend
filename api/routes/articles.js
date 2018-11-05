@@ -151,15 +151,16 @@ route.put('/:slug', auth.required, async (req, res) => {
                     message: 'Article not found'
                 })
             }
-            if (typeof req.body.article.title !== 'undefined') {
+            if (req.body.article.title && typeof req.body.article.title !== 'undefined') {
                 findArticle.title = req.body.article.title;
+                findArticle.slug = findArticle.generateSlug(findArticle.title)
             }
 
-            if (typeof req.body.article.description !== 'undefined') {
+            if (req.body.article.description && typeof req.body.article.description !== 'undefined') {
                 findArticle.description = req.body.article.description;
             }
 
-            if (typeof req.body.article.body !== 'undefined') {
+            if (req.body.article.body && typeof req.body.article.body !== 'undefined') {
                 findArticle.body = req.body.article.body;
             }
             findArticle.save()

@@ -12,23 +12,24 @@ route.post('/', async (req, res) => {
 
 
     const newUser = await User.create({
-        username: req.body.username,
-        email: req.body.email,
-        password: req.body.password
-    })
-
-    res.status(201).json({
-        message: 'User added',
-        id: newUser.id,
-
+        username: req.body.user.username,
+        email: req.body.user.email,
+        password: req.body.user.password
+    }).then((newUser) => {
+        res.status(201).json({
+            message: 'User added',
+            id: newUser.id,
+        })
+    }).catch((error) => {
+        res.status(400).send(error.errors[0].message)
     })
 })
 
 route.post('/login', async (req, res) => {
-    if (req.body.email) {
+    if (req.body.user.email) {
         const user = await User.findOne({
             where: {
-                email: req.body.email
+                email: req.body.user.email,
             }
         }).then((user) => {
             if (!user) {

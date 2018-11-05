@@ -11,6 +11,11 @@ module.exports = {
         email: {
             type: DT.STRING(50),
             allowNull: false,
+            validate: {
+                isEmail: {
+                    msg: "Must be in email format"
+                }
+            },
             unique: true
         },
         password: {
